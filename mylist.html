@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My List – Die-Cast Catalogue</title>
+<style>
+  :root {
+    --black:   #0f0f0f;
+    --white:   #f5f5f0;
+    --steel:   #1c1c2e;
+    --accent:  #e8a020;
+    --red:     #c0392b;
+    --green:   #27ae60;
+    --muted:   #6b7280;
+    --border:  #2e2e42;
+    --card-bg: #16162a;
+    --font-display: 'Oswald', sans-serif;
+    --font-body:    'Inter', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--steel);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--black);
+    border-bottom: 3px solid var(--accent);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  header .logo-icon { font-size: 28px; }
+  header h1 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  header span {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .banners { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .banner {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .banner.info    { background: #1a2a3a; border-left: 4px solid #3b82f6; color: #93c5fd; }
+  .banner.warn    { background: #2a1a00; border-left: 4px solid var(--accent); color: #fbbf24; }
+  .banner.success { background: #0a2a0a; border-left: 4px solid var(--green); color: #6ee7b7; }
+  .banner.error   { background: #2a0a0a; border-left: 4px solid var(--red); color: #fca5a5; }
+
+  #loading-state, #error-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  #loading-state .spin-icon { font-size: 40px; margin-bottom: 16px; animation: spin 1.2s linear infinite; display: inline-block; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  #empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  #empty-state .empty-icon { font-size: 56px; margin-bottom: 16px; }
+  #empty-state h2 { font-family: var(--font-display); font-size: 20px; color: var(--white); margin-bottom: 8px; }
+  #empty-state p { font-size: 14px; }
+
+  #list-container { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+  .list-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+  .item-image-wrap {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0a0a14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .item-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .item-image-fallback { font-size: 26px; }
+
+  .item-info { flex: 1; min-width: 0; }
+  .item-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .bundle-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--black);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .item-code { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .item-price { font-weight: 600; font-size: 15px; color: var(--accent); margin-top: 4px; }
+
+  .remove-btn {
+    background: none;
+    border: 1px solid #3a1a1a;
+    color: #f87171;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .remove-btn:hover { background: #3a1a1a; }
+
+  #summary {
+    margin: 12px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .summary-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-row:last-of-type { border-bottom: none; }
+  .summary-row .label { color: var(--muted); }
+  .summary-row .value { font-weight: 500; }
+  .summary-row.shipping-free .value { color: var(--green); font-weight: 600; }
+  .summary-row.shipping-paid .value { color: #fbbf24; }
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid var(--accent);
+  }
+  .summary-total .label {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .summary-total .value {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  #actions { padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-secondary {
+    background: none;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--black);
+    border: 1px solid var(--accent);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+    z-index: 999;
+    white-space: nowrap;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  #shipping-progress-wrap {
+    margin: 0 16px 4px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .progress-label strong { color: var(--accent); }
+  .progress-bar-bg { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, var(--accent), #f59e0b);
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🏎️</div>
+  <h1>My List<span>Your selected die-cast models</span></h1>
+</header>
+
+<div class="banners" id="banners"></div>
+
+<div id="shipping-progress-wrap" class="hidden">
+  <div class="progress-label" id="progress-label">Loading…</div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<div id="loading-state">
+  <div class="spin-icon">🏎️</div>
+  <p>Loading your list…</p>
+</div>
+
+<div id="error-state" class="hidden">
+  <div class="empty-icon">⚠️</div>
+  <h2>Couldn't load products</h2>
+  <p>Please check your connection and refresh the page.</p>
+</div>
+
+<div id="empty-state" class="hidden">
+  <div class="empty-icon">🛒</div>
+  <h2>Your list is empty</h2>
+  <p>Head back to the catalogue and tap<br><strong>"Add to My List"</strong> on the models you want.</p>
+</div>
+
+<div id="list-container"></div>
+
+<div id="summary" class="hidden">
+  <div class="summary-title">Order Summary</div>
+  <div class="summary-row">
+    <span class="label">Items</span>
+    <span class="value" id="sum-items">0</span>
+  </div>
+  <div class="summary-row">
+    <span class="label">Subtotal</span>
+    <span class="value" id="sum-subtotal">₹0</span>
+  </div>
+  <div class="summary-row" id="sum-shipping-row">
+    <span class="label">Shipping</span>
+    <span class="value" id="sum-shipping">₹120</span>
+  </div>
+  <div class="summary-total">
+    <span class="label">Grand Total</span>
+    <span class="value" id="sum-grand">₹0</span>
+  </div>
+</div>
+
+<div id="actions" class="hidden">
+  <button class="btn-primary" onclick="handleOrder()">📸 Screenshot & DM to Order</button>
+  <button class="btn-secondary" onclick="clearList()">🗑️ Clear Entire List</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ── Config ──
+  const SHIPPING_THRESHOLD = 2000;
+  const SHIPPING_COST = 120;
+  const STORAGE_KEY = 'mylist_v1';
+  const PRODUCTS_URL = 'products.json'; // sits alongside this HTML file on GitHub Pages
+
+  // ── State ──
+  let PRODUCTS_BY_CODE = {};   // code -> product (first match used for display)
+  let list = loadList();        // { code: true } — just a set of codes added
+
+  function loadList() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  }
+
+  function saveList() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
+  }
+
+  // ── Load products.json ──
+  async function loadProducts() {
+    try {
+      const res = await fetch(PRODUCTS_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Fetch failed');
+      const data = await res.json();
+
+      data.forEach(p => {
+        if (!PRODUCTS_BY_CODE[p.code]) {
+          PRODUCTS_BY_CODE[p.code] = p;
+        }
+      });
+
+      document.getElementById('loading-state').classList.add('hidden');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const addCode = urlParams.get('add');
+      if (addCode && PRODUCTS_BY_CODE[addCode]) {
+        window.addToList(addCode, true);
+      }
+
+      render();
+    } catch (err) {
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('error-state').classList.remove('hidden');
+      console.error('Failed to load products.json', err);
+    }
+  }
+
+  // ── Public API (called from product cards on Google Sites via ?add=CODE) ──
+  window.addToList = function(code, silent) {
+    const product = PRODUCTS_BY_CODE[code];
+    if (!product) {
+      if (!silent) showToast('⚠️ Product not found.');
+      return;
+    }
+    if (list[code]) {
+      if (!silent) showToast(`Already in your list: ${product.name}`);
+      return;
+    }
+    list[code] = true;
+    saveList();
+    render();
+    if (!silent) showToast(`✅ ${product.name} added!`);
+  };
+
+  window.removeFromList = function(code) {
+    delete list[code];
+    saveList();
+    render();
+    showToast('Item removed.');
+  };
+
+  window.clearList = function() {
+    if (!Object.keys(list).length) return;
+    if (!confirm('Clear your entire list?')) return;
+    list = {};
+    saveList();
+    render();
+    showToast('List cleared.');
+  };
+
+  window.handleOrder = function() {
+    alert('📸 Take a screenshot of this page, then DM it to us on Instagram to place your order!\n\nWe\'ll confirm availability and share payment details with you.');
+  };
+
+  // ── Totals ──
+  function getListItems() {
+    return Object.keys(list)
+      .map(code => PRODUCTS_BY_CODE[code])
+      .filter(Boolean);
+  }
+
+  function calcTotals() {
+    const items = getListItems();
+    const itemCount = items.length;
+    const subtotal  = items.reduce((s, i) => s + i.price, 0);
+    const shipping  = subtotal >= SHIPPING_THRESHOLD ? 0 : (itemCount > 0 ? SHIPPING_COST : 0);
+    const grand     = subtotal + shipping;
+    return { itemCount, subtotal, shipping, grand };
+  }
+
+  // ── Render ──
+  function render() {
+    const items = getListItems();
+    const { itemCount, subtotal, shipping, grand } = calcTotals();
+    const hasItems = items.length > 0;
+
+    document.getElementById('empty-state').classList.toggle('hidden', hasItems);
+    document.getElementById('list-container').classList.toggle('hidden', !hasItems);
+    document.getElementById('summary').classList.toggle('hidden', !hasItems);
+    document.getElementById('actions').classList.toggle('hidden', !hasItems);
+    document.getElementById('shipping-progress-wrap').classList.toggle('hidden', !hasItems);
+    document.getElementById('banners').innerHTML = '';
+
+    if (!hasItems) return;
+
+    const container = document.getElementById('list-container');
+    container.innerHTML = items.map(item => `
+      <div class="list-item">
+        <div class="item-image-wrap">
+          <img src="${item.image}" alt="${escapeHtml(item.name)}"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="item-image-fallback" style="display:none;">🚗</div>
+        </div>
+        <div class="item-info">
+          ${item.type === 'bundle' ? '<span class="bundle-tag">🎁 Bundle</span><br>' : ''}
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div class="item-code">Code: ${item.code}</div>
+          <div class="item-price">₹${item.price}</div>
+        </div>
+        <button class="remove-btn" onclick="removeFromList('${item.code}')">Remove</button>
+      </div>
+    `).join('');
+
+    document.getElementById('sum-items').textContent    = `${itemCount} item${itemCount !== 1 ? 's' : ''}`;
+    document.getElementById('sum-subtotal').textContent = `₹${subtotal}`;
+    const shippingRow = document.getElementById('sum-shipping-row');
+    const shippingVal = document.getElementById('sum-shipping');
+    if (shipping === 0) {
+      shippingRow.className = 'summary-row shipping-free';
+      shippingVal.textContent = '🎉 FREE';
+    } else {
+      shippingRow.className = 'summary-row shipping-paid';
+      shippingVal.textContent = `₹${shipping}`;
+    }
+    document.getElementById('sum-grand').textContent = `₹${grand}`;
+
+    const bannersEl = document.getElementById('banners');
+    if (shipping > 0) {
+      const needed = SHIPPING_THRESHOLD - subtotal;
+      bannersEl.innerHTML += `<div class="banner warn">🚚 Add ₹${needed} more to unlock FREE shipping!</div>`;
+    } else {
+      bannersEl.innerHTML += `<div class="banner success">🎉 You've unlocked FREE shipping!</div>`;
+    }
+    bannersEl.innerHTML += `<div class="banner info">📸 Screenshot this page and DM us on Instagram to order.</div>`;
+
+    const pct = Math.min(100, Math.round((subtotal / SHIPPING_THRESHOLD) * 100));
+    document.getElementById('progress-bar-fill').style.width = pct + '%';
+    const progressLabel = document.getElementById('progress-label');
+    if (shipping === 0) {
+      progressLabel.innerHTML = `<strong>Free shipping unlocked!</strong> ✅`;
+    } else {
+      progressLabel.innerHTML = `₹${subtotal} of <strong>₹${SHIPPING_THRESHOLD}</strong> for free shipping`;
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── Init ──
+  loadProducts();
+</script>
+</body>
+</html>
