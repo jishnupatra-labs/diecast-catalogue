@@ -1,287 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My List – Die-Cast Catalogue</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Garage</title>
 <style>
-  :root {
-    --black:   #0f0f0f;
-    --white:   #f5f5f0;
-    --steel:   #1c1c2e;
-    --accent:  #e8a020;
-    --red:     #c0392b;
-    --green:   #27ae60;
-    --muted:   #6b7280;
-    --border:  #2e2e42;
-    --card-bg: #16162a;
-    --font-display: 'Oswald', sans-serif;
-    --font-body:    'Inter', sans-serif;
-  }
-
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
-    background: var(--steel);
-    color: var(--white);
-    font-family: var(--font-body);
+    background: #ffffff;
+    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
-    line-height: 1.6;
     min-height: 100vh;
-  }
-
-  header {
-    background: var(--black);
-    border-bottom: 3px solid var(--accent);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  header .logo-icon { font-size: 28px; }
-  header h1 {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
-  header span {
-    font-size: 12px;
-    color: var(--muted);
-    display: block;
-    font-weight: 400;
-    letter-spacing: 0;
-    text-transform: none;
   }
 
   .banners { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
   .banner {
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
   }
-  .banner.info    { background: #1a2a3a; border-left: 4px solid #3b82f6; color: #93c5fd; }
-  .banner.warn    { background: #2a1a00; border-left: 4px solid var(--accent); color: #fbbf24; }
-  .banner.success { background: #0a2a0a; border-left: 4px solid var(--green); color: #6ee7b7; }
-  .banner.error   { background: #2a0a0a; border-left: 4px solid var(--red); color: #fca5a5; }
+  .banner.info    { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1d4ed8; }
+  .banner.warn    { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
+  .banner.success { background: #f0fdf4; border-left: 4px solid #22c55e; color: #15803d; }
 
-  #loading-state, #error-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--muted);
+  #loading-state, #empty-state, #error-state {
+    text-align: center; padding: 60px 20px; color: #9ca3af;
   }
-  #loading-state .spin-icon { font-size: 40px; margin-bottom: 16px; animation: spin 1.2s linear infinite; display: inline-block; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-  #empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
   #empty-state .empty-icon { font-size: 56px; margin-bottom: 16px; }
-  #empty-state h2 { font-family: var(--font-display); font-size: 20px; color: var(--white); margin-bottom: 8px; }
+  #empty-state h2 { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px; }
   #empty-state p { font-size: 14px; }
+
+  #shipping-progress-wrap {
+    margin: 0 16px 4px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .progress-label { font-size: 12px; color: #6b7280; margin-bottom: 6px; }
+  .progress-label strong { color: #111827; }
+  .progress-bar-bg { background: #e5e7eb; border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    height: 100%; border-radius: 99px;
+    transition: width 0.4s ease;
+  }
 
   #list-container { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
 
   .list-item {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
     padding: 12px;
     display: flex;
     align-items: center;
     gap: 12px;
-    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
   .item-image-wrap {
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #0a0a14;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 64px; height: 64px; flex-shrink: 0;
+    border-radius: 8px; overflow: hidden;
+    background: #f3f4f6;
+    display: flex; align-items: center; justify-content: center;
   }
-  .item-image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .item-image-wrap img { width: 100%; height: 100%; object-fit: contain; }
   .item-image-fallback { font-size: 26px; }
 
   .item-info { flex: 1; min-width: 0; }
-  .item-name {
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    color: var(--white);
-    line-height: 1.3;
-  }
   .bundle-tag {
-    display: inline-block;
-    background: var(--accent);
-    color: var(--black);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
+    display: inline-block; background: #fef3c7; color: #92400e;
+    font-size: 9px; font-weight: 700; padding: 2px 6px;
+    border-radius: 4px; margin-bottom: 3px; text-transform: uppercase;
   }
-  .item-code { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .item-price { font-weight: 600; font-size: 15px; color: var(--accent); margin-top: 4px; }
+  .item-name {
+    font-size: 13px; font-weight: 700;
+    color: #111827; line-height: 1.3;
+  }
+  .item-code { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+  .item-price { font-weight: 700; font-size: 14px; color: #111827; margin-top: 4px; }
 
   .remove-btn {
-    background: none;
-    border: 1px solid #3a1a1a;
-    color: #f87171;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.15s;
-    white-space: nowrap;
-    flex-shrink: 0;
+    background: none; border: 1px solid #fecaca;
+    color: #ef4444; border-radius: 6px;
+    padding: 6px 12px; font-size: 12px;
+    cursor: pointer; transition: background 0.15s;
+    white-space: nowrap; flex-shrink: 0;
   }
-  .remove-btn:hover { background: #3a1a1a; }
+  .remove-btn:hover { background: #fef2f2; }
 
   #summary {
     margin: 12px 16px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 16px;
   }
   .summary-title {
-    font-family: var(--font-display);
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    color: var(--accent);
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: #111827; margin-bottom: 12px;
   }
   .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center; font-size: 14px;
+    padding: 5px 0; border-bottom: 1px solid #e5e7eb;
   }
   .summary-row:last-of-type { border-bottom: none; }
-  .summary-row .label { color: var(--muted); }
-  .summary-row .value { font-weight: 500; }
-  .summary-row.shipping-free .value { color: var(--green); font-weight: 600; }
-  .summary-row.shipping-paid .value { color: #fbbf24; }
+  .summary-row .label { color: #6b7280; }
+  .summary-row .value { font-weight: 600; }
+  .summary-row.shipping-free .value { color: #15803d; }
+  .summary-row.shipping-paid .value { color: #92400e; }
   .summary-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 2px solid var(--accent);
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 12px;
+    padding-top: 12px; border-top: 2px solid #111827;
   }
-  .summary-total .label {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .summary-total .value {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--accent);
-  }
+  .summary-total .label { font-size: 16px; font-weight: 800; color: #111827; }
+  .summary-total .value { font-size: 22px; font-weight: 800; color: #111827; }
 
   #actions { padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 10px; }
   .btn-primary {
-    background: var(--accent);
-    color: var(--black);
-    border: none;
-    border-radius: 8px;
-    padding: 14px;
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-    transition: opacity 0.15s;
+    background: #111827; color: #fff; border: none;
+    border-radius: 8px; padding: 14px;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer; width: 100%; transition: opacity 0.15s;
   }
   .btn-primary:hover { opacity: 0.88; }
   .btn-secondary {
-    background: none;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 11px;
-    font-size: 13px;
-    cursor: pointer;
-    width: 100%;
+    background: none; color: #9ca3af;
+    border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 11px; font-size: 13px;
+    cursor: pointer; width: 100%;
     transition: border-color 0.15s, color 0.15s;
   }
-  .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+  .btn-secondary:hover { border-color: #ef4444; color: #ef4444; }
 
   #toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: var(--black);
-    border: 1px solid var(--accent);
-    color: var(--white);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    transition: transform 0.3s ease;
-    z-index: 999;
-    white-space: nowrap;
-    max-width: 90vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    background: #111827; color: #fff;
+    padding: 10px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    transition: transform 0.3s ease; z-index: 999;
+    white-space: nowrap; max-width: 90vw;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
-
-  #shipping-progress-wrap {
-    margin: 0 16px 4px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-  }
-  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  .progress-label strong { color: var(--accent); }
-  .progress-bar-bg { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
-  .progress-bar-fill {
-    background: linear-gradient(90deg, var(--accent), #f59e0b);
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
-
-<header>
-  <div class="logo-icon">🏎️</div>
-  <h1>My List<span>Your selected die-cast models</span></h1>
-</header>
 
 <div class="banners" id="banners"></div>
 
@@ -292,21 +163,13 @@
   </div>
 </div>
 
-<div id="loading-state">
-  <div class="spin-icon">🏎️</div>
-  <p>Loading your list…</p>
-</div>
-
-<div id="error-state" class="hidden">
-  <div class="empty-icon">⚠️</div>
-  <h2>Couldn't load products</h2>
-  <p>Please check your connection and refresh the page.</p>
-</div>
+<div id="loading-state"><p>Loading your garage…</p></div>
+<div id="error-state" class="hidden"><p>⚠️ Couldn't load products. Please refresh.</p></div>
 
 <div id="empty-state" class="hidden">
   <div class="empty-icon">🛒</div>
-  <h2>Your list is empty</h2>
-  <p>Head back to the catalogue and tap<br><strong>"Add to My List"</strong> on the models you want.</p>
+  <h2>Your garage is empty</h2>
+  <p>Head back to the catalogue and tap<br><strong>"Add to My Garage"</strong> on the models you want.</p>
 </div>
 
 <div id="list-container"></div>
@@ -333,194 +196,163 @@
 
 <div id="actions" class="hidden">
   <button class="btn-primary" onclick="handleOrder()">📸 Screenshot & DM to Order</button>
-  <button class="btn-secondary" onclick="clearList()">🗑️ Clear Entire List</button>
+  <button class="btn-secondary" onclick="clearList()">🗑️ Clear Entire Garage</button>
 </div>
 
 <div id="toast"></div>
 
 <script>
-  // ── Config ──
   const SHIPPING_THRESHOLD = 2000;
   const SHIPPING_COST = 120;
-  const STORAGE_KEY = 'mylist_v1';
-  const PRODUCTS_URL = 'products.json'; // sits alongside this HTML file on GitHub Pages
+  const PRODUCTS_URL = "products.json";
 
-  // ── State ──
-  let PRODUCTS_BY_CODE = {};   // code -> product (first match used for display)
-  let list = loadList();        // { code: true } — just a set of codes added
+  
+  const STORAGE_KEY = "mylist_v1";
+  const SESSION_KEY = "mylist_session_v1";
 
-  function loadList() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch { return {}; }
+  function initSession() {
+    // If no session marker exists, this is a new session — clear the list
+    if (!sessionStorage.getItem(SESSION_KEY)) {
+      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.setItem(SESSION_KEY, "active");
+    }
   }
 
-  function saveList() {
+  function loadList() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+    catch { return {}; }
+  }
+
+  function saveList(list) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
   }
 
-  // ── Load products.json ──
+
+  let PRODUCTS_BY_CODE = {};
+  let list = {};
+
   async function loadProducts() {
     try {
-      const res = await fetch(PRODUCTS_URL, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Fetch failed');
+      initSession();
+      list = loadList();
+      const res = await fetch(PRODUCTS_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error();
       const data = await res.json();
-
-      data.forEach(p => {
-        if (!PRODUCTS_BY_CODE[p.code]) {
-          PRODUCTS_BY_CODE[p.code] = p;
-        }
-      });
-
-      document.getElementById('loading-state').classList.add('hidden');
-
+      data.forEach(p => { if (!PRODUCTS_BY_CODE[p.code]) PRODUCTS_BY_CODE[p.code] = p; });
+      document.getElementById("loading-state").classList.add("hidden");
       const urlParams = new URLSearchParams(window.location.search);
-      const addCode = urlParams.get('add');
-      if (addCode && PRODUCTS_BY_CODE[addCode]) {
-        window.addToList(addCode, true);
-      }
-
+      const addCode = urlParams.get("add");
+      if (addCode && PRODUCTS_BY_CODE[addCode]) addToList(addCode, true);
       render();
-    } catch (err) {
-      document.getElementById('loading-state').classList.add('hidden');
-      document.getElementById('error-state').classList.remove('hidden');
-      console.error('Failed to load products.json', err);
+    } catch(e) {
+      document.getElementById("loading-state").classList.add("hidden");
+      document.getElementById("error-state").classList.remove("hidden");
     }
   }
 
-  // ── Public API (called from product cards on Google Sites via ?add=CODE) ──
-  window.addToList = function(code, silent) {
-    const product = PRODUCTS_BY_CODE[code];
-    if (!product) {
-      if (!silent) showToast('⚠️ Product not found.');
-      return;
-    }
-    if (list[code]) {
-      if (!silent) showToast(`Already in your list: ${product.name}`);
-      return;
-    }
+  function addToList(code, silent) {
+    const p = PRODUCTS_BY_CODE[code];
+    if (!p) return;
+    list = loadList();
+    if (list[code]) { if (!silent) showToast("Already in your garage!"); return; }
     list[code] = true;
-    saveList();
+    saveList(list);
     render();
-    if (!silent) showToast(`✅ ${product.name} added!`);
-  };
+    if (!silent) showToast("✅ " + p.name + " added!");
+  }
 
   window.removeFromList = function(code) {
+    list = loadList();
     delete list[code];
-    saveList();
+    saveList(list);
     render();
-    showToast('Item removed.');
+    showToast("Item removed.");
   };
 
   window.clearList = function() {
-    if (!Object.keys(list).length) return;
-    if (!confirm('Clear your entire list?')) return;
+    if (!Object.keys(loadList()).length) return;
+    if (!confirm("Clear your entire garage?")) return;
     list = {};
-    saveList();
+    saveList(list);
     render();
-    showToast('List cleared.');
+    showToast("Garage cleared.");
   };
 
   window.handleOrder = function() {
-    alert('📸 Take a screenshot of this page, then DM it to us on Instagram to place your order!\n\nWe\'ll confirm availability and share payment details with you.');
+    alert("📸 Take a screenshot of this page, then DM it to us on Instagram to place your order!\n\nWe'll confirm availability and share payment details with you.");
   };
 
-  // ── Totals ──
   function getListItems() {
-    return Object.keys(list)
-      .map(code => PRODUCTS_BY_CODE[code])
-      .filter(Boolean);
+    return Object.keys(loadList()).map(c => PRODUCTS_BY_CODE[c]).filter(Boolean);
   }
 
   function calcTotals() {
     const items = getListItems();
-    const itemCount = items.length;
-    const subtotal  = items.reduce((s, i) => s + i.price, 0);
-    const shipping  = subtotal >= SHIPPING_THRESHOLD ? 0 : (itemCount > 0 ? SHIPPING_COST : 0);
-    const grand     = subtotal + shipping;
-    return { itemCount, subtotal, shipping, grand };
+    const subtotal = items.reduce((s, i) => s + i.price, 0);
+    const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : (items.length > 0 ? SHIPPING_COST : 0);
+    return { itemCount: items.length, subtotal, shipping, grand: subtotal + shipping };
   }
 
-  // ── Render ──
   function render() {
     const items = getListItems();
     const { itemCount, subtotal, shipping, grand } = calcTotals();
-    const hasItems = items.length > 0;
+    const has = items.length > 0;
 
-    document.getElementById('empty-state').classList.toggle('hidden', hasItems);
-    document.getElementById('list-container').classList.toggle('hidden', !hasItems);
-    document.getElementById('summary').classList.toggle('hidden', !hasItems);
-    document.getElementById('actions').classList.toggle('hidden', !hasItems);
-    document.getElementById('shipping-progress-wrap').classList.toggle('hidden', !hasItems);
-    document.getElementById('banners').innerHTML = '';
+    document.getElementById("empty-state").classList.toggle("hidden", has);
+    document.getElementById("list-container").classList.toggle("hidden", !has);
+    document.getElementById("summary").classList.toggle("hidden", !has);
+    document.getElementById("actions").classList.toggle("hidden", !has);
+    document.getElementById("shipping-progress-wrap").classList.toggle("hidden", !has);
+    document.getElementById("banners").innerHTML = "";
 
-    if (!hasItems) return;
+    if (!has) return;
 
-    const container = document.getElementById('list-container');
-    container.innerHTML = items.map(item => `
+    document.getElementById("list-container").innerHTML = items.map(item => `
       <div class="list-item">
         <div class="item-image-wrap">
-          <img src="${item.image}" alt="${escapeHtml(item.name)}"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-          <div class="item-image-fallback" style="display:none;">🚗</div>
+          <img src="${item.image}" alt="${esc(item.name)}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="item-image-fallback">🚗</div>
         </div>
         <div class="item-info">
-          ${item.type === 'bundle' ? '<span class="bundle-tag">🎁 Bundle</span><br>' : ''}
-          <div class="item-name">${escapeHtml(item.name)}</div>
+          ${item.type === "bundle" ? `<span class="bundle-tag">🎁 ${esc(item.bundle_name)}</span><br>` : ""}
+          <div class="item-name">${item.type === "bundle" ? esc(item.bundle_name) : esc(item.name)}</div>
           <div class="item-code">Code: ${item.code}</div>
           <div class="item-price">₹${item.price}</div>
         </div>
         <button class="remove-btn" onclick="removeFromList('${item.code}')">Remove</button>
-      </div>
-    `).join('');
+      </div>`).join("");
 
-    document.getElementById('sum-items').textContent    = `${itemCount} item${itemCount !== 1 ? 's' : ''}`;
-    document.getElementById('sum-subtotal').textContent = `₹${subtotal}`;
-    const shippingRow = document.getElementById('sum-shipping-row');
-    const shippingVal = document.getElementById('sum-shipping');
-    if (shipping === 0) {
-      shippingRow.className = 'summary-row shipping-free';
-      shippingVal.textContent = '🎉 FREE';
-    } else {
-      shippingRow.className = 'summary-row shipping-paid';
-      shippingVal.textContent = `₹${shipping}`;
-    }
-    document.getElementById('sum-grand').textContent = `₹${grand}`;
+    document.getElementById("sum-items").textContent    = `${itemCount} item${itemCount !== 1 ? "s" : ""}`;
+    document.getElementById("sum-subtotal").textContent = `₹${subtotal}`;
+    const shRow = document.getElementById("sum-shipping-row");
+    const shVal = document.getElementById("sum-shipping");
+    if (shipping === 0) { shRow.className = "summary-row shipping-free"; shVal.textContent = "🎉 FREE"; }
+    else { shRow.className = "summary-row shipping-paid"; shVal.textContent = `₹${shipping}`; }
+    document.getElementById("sum-grand").textContent = `₹${grand}`;
 
-    const bannersEl = document.getElementById('banners');
-    if (shipping > 0) {
-      const needed = SHIPPING_THRESHOLD - subtotal;
-      bannersEl.innerHTML += `<div class="banner warn">🚚 Add ₹${needed} more to unlock FREE shipping!</div>`;
-    } else {
-      bannersEl.innerHTML += `<div class="banner success">🎉 You've unlocked FREE shipping!</div>`;
-    }
-    bannersEl.innerHTML += `<div class="banner info">📸 Screenshot this page and DM us on Instagram to order.</div>`;
+    const b = document.getElementById("banners");
+    if (shipping > 0) b.innerHTML += `<div class="banner warn">🚚 Add ₹${SHIPPING_THRESHOLD - subtotal} more for FREE shipping!</div>`;
+    else b.innerHTML += `<div class="banner success">🎉 You've unlocked FREE shipping!</div>`;
+    b.innerHTML += `<div class="banner info">📸 Screenshot this page and DM us on Instagram to order.</div>`;
 
     const pct = Math.min(100, Math.round((subtotal / SHIPPING_THRESHOLD) * 100));
-    document.getElementById('progress-bar-fill').style.width = pct + '%';
-    const progressLabel = document.getElementById('progress-label');
-    if (shipping === 0) {
-      progressLabel.innerHTML = `<strong>Free shipping unlocked!</strong> ✅`;
-    } else {
-      progressLabel.innerHTML = `₹${subtotal} of <strong>₹${SHIPPING_THRESHOLD}</strong> for free shipping`;
-    }
+    document.getElementById("progress-bar-fill").style.width = pct + "%";
+    document.getElementById("progress-label").innerHTML =
+      shipping === 0 ? `<strong>Free shipping unlocked!</strong> ✅`
+                     : `₹${subtotal} of <strong>₹${SHIPPING_THRESHOLD}</strong> for free shipping`;
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  function esc(str) {
+    const d = document.createElement("div"); d.textContent = str; return d.innerHTML;
   }
 
   function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    const t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2500);
   }
 
-  // ── Init ──
   loadProducts();
 </script>
 </body>
