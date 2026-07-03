@@ -31,42 +31,29 @@
   }
 
   .card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    background: #ffffff; border: 1px solid #e5e7eb;
+    border-radius: 10px; overflow: hidden;
+    display: flex; flex-direction: column;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     transition: box-shadow 0.15s, transform 0.15s;
   }
-  .card:hover {
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-    transform: translateY(-3px);
-  }
+  .card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.12); transform: translateY(-3px); }
 
   .card-img-wrap {
     width: 100%; aspect-ratio: 1; overflow: hidden;
     background: #f3f4f6; position: relative; cursor: pointer;
   }
   .card-img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0s;
+    width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0s;
   }
-  .card-img-wrap:hover .card-img {
-    transition: transform 1.5s ease;
-    transform: scale(1.18);
-  }
+  .card-img-wrap:hover .card-img { transition: transform 1.5s ease; transform: scale(1.18); }
   .card-img-fallback {
     width: 100%; height: 100%; display: none;
-    align-items: center; justify-content: center;
-    font-size: 36px; background: #f3f4f6;
+    align-items: center; justify-content: center; font-size: 36px; background: #f3f4f6;
   }
 
   .card-body {
-    padding: 8px 10px 10px;
-    display: flex; flex-direction: column; flex: 1; gap: 3px;
-    text-align: center;
+    padding: 8px 10px 10px; display: flex; flex-direction: column; flex: 1; gap: 3px; text-align: center;
   }
   .card-code-name { font-size: 11px; font-weight: 700; color: #111827; line-height: 1.3; }
   .card-code-name span.code { color: #6b7280; font-weight: 600; }
@@ -74,11 +61,9 @@
   .card-price { font-size: 14px; font-weight: 700; color: #111827; margin-top: 4px; }
 
   .add-btn {
-    margin-top: 8px;
-    background: #111827; color: #ffffff; border: none;
-    border-radius: 6px; padding: 8px 6px;
-    font-size: 11px; font-weight: 600; cursor: pointer;
-    width: 100%; transition: background 0.15s; letter-spacing: 0.3px;
+    margin-top: 8px; background: #111827; color: #ffffff; border: none;
+    border-radius: 6px; padding: 8px 6px; font-size: 11px; font-weight: 600;
+    cursor: pointer; width: 100%; transition: background 0.15s; letter-spacing: 0.3px;
   }
   .add-btn:hover { background: #374151; }
   .add-btn:disabled { background: #d1fae5; color: #065f46; cursor: not-allowed; font-weight: 700; }
@@ -86,12 +71,9 @@
   #toast {
     position: fixed; bottom: 20px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #111827; color: #fff;
-    padding: 10px 18px; border-radius: 8px;
-    font-size: 13px; font-weight: 500;
-    transition: transform 0.3s ease; z-index: 999;
-    white-space: nowrap; max-width: 90vw;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    background: #111827; color: #fff; padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; transition: transform 0.3s ease; z-index: 999;
+    white-space: nowrap; max-width: 90vw; box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
   .hidden { display: none !important; }
@@ -100,21 +82,19 @@
 <body>
 
 <div id="loading-state"><div class="icon">🏎️</div><p>Loading catalogue…</p></div>
-<div id="error-state" class="hidden"><div class="icon">⚠️</div><h2>Couldn't load products</h2><p>Please refresh the page.</p></div>
-<div id="empty-state" class="hidden"><div class="icon">🚧</div><h2>Coming Soon</h2><p>No products available in this category yet.</p></div>
+<div id="error-state" class="hidden"><div class="icon">⚠️</div><h2>Couldn't load products</h2><p>Please refresh.</p></div>
+<div id="empty-state" class="hidden"><div class="icon">🚧</div><h2>Coming Soon</h2><p>No products available yet.</p></div>
 <div id="grid" class="hidden"></div>
 <div id="toast"></div>
 
 <script>
   const SERIES_FILTER = "Matchbox Moving Parts";
   const PRODUCTS_URL  = "products.json";
-
   
   const STORAGE_KEY = "mylist_v1";
   const SESSION_KEY = "mylist_session_v1";
 
   function initSession() {
-    // If no session marker exists, this is a new session — clear the list
     if (!sessionStorage.getItem(SESSION_KEY)) {
       localStorage.removeItem(STORAGE_KEY);
       sessionStorage.setItem(SESSION_KEY, "active");
@@ -129,7 +109,6 @@
   function saveList(list) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
   }
-
 
   let list = {};
 
@@ -155,7 +134,7 @@
         const inList = !!list[p.code];
         return `<div class="card">
           <div class="card-img-wrap">
-            <img class="card-img" src="${p.image}" alt="${esc(p.name)}"
+            <img class="card-img" src="${p.image}" alt=""
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
             <div class="card-img-fallback">🚗</div>
           </div>
@@ -164,7 +143,9 @@
             <div class="card-brand">${esc(p.brand)}</div>
             <div class="card-price">₹${p.price}</div>
             <button class="add-btn" id="btn-${p.code}"
-              onclick="addToList('${p.code}','${esc(p.name)}')"
+              data-code="${p.code}"
+              data-name="${esc(p.name)}"
+              onclick="addToList(this)"
               ${inList ? "disabled" : ""}>
               ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
             </button>
@@ -177,13 +158,15 @@
     }
   }
 
-  function addToList(code, name) {
+  function addToList(btn) {
+    const code = btn.dataset.code;
+    const name = btn.dataset.name;
     list = loadList();
     if (list[code]) { showToast("Already in your garage!"); return; }
     list[code] = true;
     saveList(list);
-    const btn = document.getElementById("btn-" + code);
-    if (btn) { btn.disabled = true; btn.textContent = "✅ Added to My Garage"; }
+    btn.disabled = true;
+    btn.textContent = "✅ Added to My Garage";
     showToast("✅ " + name + " added!");
   }
 
