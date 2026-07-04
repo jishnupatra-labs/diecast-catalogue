@@ -14,6 +14,20 @@
     "image": "images/JHK31.jpg"
   },
   {
+    "id": 133,
+    "code": "JJP56",
+    "brand": "Matchbox",
+    "name": "JEEP® WRANGLER SUPERLIFT",
+    "bundle_name": null,
+    "series": "Matchbox Card",
+    "year": 2026,
+    "price": 280,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJP56.jpg"
+  },
+  {
     "id": 2,
     "code": "JHK30",
     "brand": "Matchbox",
@@ -82,6 +96,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JHM08.jpg"
+  },
+  {
+    "id": 130,
+    "code": "JHM21",
+    "brand": "Matchbox",
+    "name": "1963 UNIMOG 406",
+    "bundle_name": null,
+    "series": "Matchbox Card",
+    "year": 2026,
+    "price": 230,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JHM21.jpg"
   },
   {
     "id": 6,
@@ -154,6 +182,20 @@
     "image": "images/HVP82.jpg"
   },
   {
+    "id": 137,
+    "code": "JHM08",
+    "brand": "Matchbox",
+    "name": "SHERP N 1200",
+    "bundle_name": null,
+    "series": "Matchbox Card",
+    "year": 2026,
+    "price": 250,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JHM08.jpg"
+  },
+  {
     "id": 11,
     "code": "JHM51",
     "brand": "Matchbox",
@@ -208,6 +250,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JHN16.jpg"
+  },
+  {
+    "id": 132,
+    "code": "JHN15",
+    "brand": "Matchbox",
+    "name": "MBX TURF HAULER™ II",
+    "bundle_name": null,
+    "series": "Matchbox Card",
+    "year": 2026,
+    "price": 210,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JHN15.jpg"
   },
   {
     "id": 15,
@@ -278,6 +334,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JHM25.jpg"
+  },
+  {
+    "id": 131,
+    "code": "JHM90",
+    "brand": "Matchbox",
+    "name": "TOYOTA 4RUNNER",
+    "bundle_name": null,
+    "series": "Matchbox Card",
+    "year": 2026,
+    "price": 210,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JHM90.jpg"
   },
   {
     "id": 20,
@@ -700,6 +770,20 @@
     "image": "images/JJK78.jpg"
   },
   {
+    "id": 134,
+    "code": "JJK81",
+    "brand": "Hot Wheels",
+    "name": "'59 CHEVY IMPALA",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 220,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK81.jpg"
+  },
+  {
     "id": 50,
     "code": "JJK87",
     "brand": "Hot Wheels",
@@ -994,6 +1078,20 @@
     "image": "images/JJK82.jpg"
   },
   {
+    "id": 135,
+    "code": "JJH52",
+    "brand": "Hot Wheels",
+    "name": "FORD F-150 LIGHTNING SUPERTRUCK",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 290,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJH52.jpg"
+  },
+  {
     "id": 71,
     "code": "JJJ83",
     "brand": "Hot Wheels",
@@ -1286,6 +1384,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/HTV53.jpg"
+  },
+  {
+    "id": 136,
+    "code": "JHX05",
+    "brand": "Hot Wheels",
+    "name": "FORZA - AUDI 90 QUATTRO",
+    "bundle_name": null,
+    "series": "Hot Wheels Premium",
+    "year": 2026,
+    "price": 700,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JHX05.jpg"
   },
   {
     "id": 92,
