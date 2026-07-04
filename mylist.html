@@ -168,6 +168,7 @@
     document.getElementById('modal-icon').textContent = icon;
     document.getElementById('modal-message').textContent = message;
     document.getElementById('modal-overlay').style.display = 'flex';
+    document.getElementById('modal-overlay').scrollIntoView({ behavior: 'smooth', block: 'start' });
     const cancelBtn = document.getElementById('modal-cancel');
     const confirmBtn = document.getElementById('modal-confirm');
     if (confirmOnly) {
