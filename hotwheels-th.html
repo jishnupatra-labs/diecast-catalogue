@@ -134,7 +134,7 @@
         const inList = !!list[p.code];
         return `<div class="card">
           <div class="card-img-wrap">
-            <img class="card-img" src="${p.image}" alt=""
+            <img class="card-img" src="${p.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
             <div class="card-img-fallback">🚗</div>
           </div>

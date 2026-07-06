@@ -247,7 +247,7 @@
     document.getElementById("list-container").innerHTML = items.map(item => `
       <div class="list-item">
         <div class="item-image-wrap">
-          <img src="${item.image}" alt=""
+          <img src="${item.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
           <div class="item-image-fallback">🚗</div>
         </div>
