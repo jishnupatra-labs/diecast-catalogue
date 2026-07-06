@@ -714,6 +714,20 @@
     "image": "images/JHR46.jpg"
   },
   {
+    "id": 144,
+    "code": "JJK97",
+    "brand": "Hot Wheels",
+    "name": "BATMAN™ - THE BATMAN",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 300,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK97.jpg"
+  },
+  {
     "id": 46,
     "code": "JJJ99",
     "brand": "Hot Wheels",
@@ -742,6 +756,34 @@
     "image": "images/JJL44.jpg"
   },
   {
+    "id": 146,
+    "code": "JJK24",
+    "brand": "Hot Wheels",
+    "name": "'68 SHELBY GT500™",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 280,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK24.jpg"
+  },
+  {
+    "id": 147,
+    "code": "JJK27",
+    "brand": "Hot Wheels",
+    "name": "'11 CORVETTE GRAND SPORT™",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 280,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK27.jpg"
+  },
+  {
     "id": 48,
     "code": "JJJ89",
     "brand": "Hot Wheels",
@@ -756,6 +798,20 @@
     "image": "images/JJJ89.jpg"
   },
   {
+    "id": 149,
+    "code": "JJK08",
+    "brand": "Hot Wheels",
+    "name": "'70 FORD ESCORT RS1600",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 250,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK08.jpg"
+  },
+  {
     "id": 49,
     "code": "JJK78",
     "brand": "Hot Wheels",
@@ -768,6 +824,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJK78.jpg"
+  },
+  {
+    "id": 140,
+    "code": "JJK14",
+    "brand": "Hot Wheels",
+    "name": "'64 LINCOLN CONTINENTAL",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 240,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK14.jpg"
   },
   {
     "id": 134,
@@ -826,6 +896,20 @@
     "image": "images/JJK68.jpg"
   },
   {
+    "id": 143,
+    "code": "JJK85",
+    "brand": "Hot Wheels",
+    "name": "RAIJIN EXPRESS™",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 290,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK85.jpg"
+  },
+  {
     "id": 53,
     "code": "JJJ98",
     "brand": "Hot Wheels",
@@ -840,6 +924,20 @@
     "image": "images/JJJ98.jpg"
   },
   {
+    "id": 141,
+    "code": "JJH49",
+    "brand": "Hot Wheels",
+    "name": "CADILLAC CELESTIQ",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 240,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJH49.jpg"
+  },
+  {
     "id": 54,
     "code": "JJH52",
     "brand": "Hot Wheels",
@@ -852,6 +950,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJH52.jpg"
+  },
+  {
+    "id": 148,
+    "code": "JJH58",
+    "brand": "Hot Wheels",
+    "name": "'88 MITSUBISHI STARION",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 280,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJH58.jpg"
   },
   {
     "id": 55,
@@ -880,6 +992,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJJ65.jpg"
+  },
+  {
+    "id": 142,
+    "code": "JJK94",
+    "brand": "Hot Wheels",
+    "name": "AUSTIN MINI COOPER S",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 230,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK94.jpg"
   },
   {
     "id": 57,
@@ -936,6 +1062,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJJ98.jpg"
+  },
+  {
+    "id": 145,
+    "code": "JJK05",
+    "brand": "Hot Wheels",
+    "name": "MACH SPEEDER",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 220,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK05.jpg"
   },
   {
     "id": 61,
@@ -1104,6 +1244,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJJ83.jpg"
+  },
+  {
+    "id": 139,
+    "code": "JJK26",
+    "brand": "Hot Wheels",
+    "name": "'70 DODGE CHARGER",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 190,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK26.jpg"
   },
   {
     "id": 72,
@@ -1412,6 +1566,20 @@
     "status": "Available",
     "type": "single",
     "image": "images/HXD63.jpg"
+  },
+  {
+    "id": 138,
+    "code": "HKK63",
+    "brand": "Hot Wheels",
+    "name": "KOOL KOMBI - DRACULA",
+    "bundle_name": null,
+    "series": "Hot Wheels Premium",
+    "year": 2026,
+    "price": 650,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/HKK63.jpg"
   },
   {
     "id": 93,
