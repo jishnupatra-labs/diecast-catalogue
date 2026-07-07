@@ -69,12 +69,43 @@
     white-space: nowrap; max-width: 90vw; box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
+
+  #pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  .page-btn {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .page-btn:hover:not(:disabled) { background: #f3f4f6; border-color: #111827; }
+  .page-btn:disabled { color: #d1d5db; border-color: #f3f4f6; cursor: not-allowed; }
+  .page-info {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 <div id="loading-state"><div class="icon">🎁</div><p>Loading bundles…</p></div>
 <div id="grid" class="hidden"></div>
+<div id="pagination" class="hidden"></div>
 <div id="toast"></div>
 
 <script>
@@ -112,6 +143,9 @@
       document.getElementById("loading-state").classList.add("hidden");
       const grid = document.getElementById("grid");
       grid.classList.remove("hidden");
+      allProducts = bundles;
+      renderPage(1);
+      return;
       grid.innerHTML = bundles.map(p => {
         const inList = !!list[p.code];
         const discount = p.original_price ? Math.round((1 - p.price / p.original_price) * 100) : null;
@@ -188,6 +222,81 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // ── Pagination ──
+  let allProducts = [];
+  let currentPage = 1;
+
+  function getRowsPerPage() {
+    return 4;
+  }
+
+  function getColsPerRow() {
+    return window.innerWidth <= 600 ? 2 : 4;
+  }
+
+  function getItemsPerPage() {
+    return getRowsPerPage() * getColsPerRow();
+  }
+
+  function getTotalPages() {
+    return Math.ceil(allProducts.length / getItemsPerPage());
+  }
+
+  function renderPage(page) {
+    currentPage = page;
+    const itemsPerPage = getItemsPerPage();
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageProducts = allProducts.slice(start, end);
+    const list = loadList();
+
+    const grid = document.getElementById('grid');
+    grid.innerHTML = pageProducts.map(p => {
+      const inList = !!list[p.code];
+      return `<div class="card">
+        <div class="card-img-wrap">
+          <img class="card-img" src="${p.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="card-img-fallback">🚗</div>
+        </div>
+        <div class="card-body">
+          <div class="card-code-name"><span class="code">${p.code}</span> : ${esc(p.name)}</div>
+          <div class="card-brand">${esc(p.brand)}</div>
+          <div class="card-price">₹${p.price}</div>
+          <button class="add-btn" id="btn-${p.code}"
+            data-code="${p.code}"
+            data-name="${esc(p.name)}"
+            onclick="addToList(this)"
+            ${inList ? "disabled" : ""}>
+            ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+
+    renderPagination();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderPagination() {
+    const total = getTotalPages();
+    const pag = document.getElementById('pagination');
+
+    if (total <= 1) { pag.classList.add('hidden'); return; }
+    pag.classList.remove('hidden');
+
+    pag.innerHTML = `
+      <button class="page-btn" onclick="renderPage(1)" ${currentPage === 1 ? 'disabled' : ''}>&lt;&lt; First</button>
+      <button class="page-btn" onclick="renderPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>&lt; Prev</button>
+      <span class="page-info">${currentPage} of ${total}</span>
+      <button class="page-btn" onclick="renderPage(${currentPage + 1})" ${currentPage === total ? 'disabled' : ''}>Next &gt;</button>
+      <button class="page-btn" onclick="renderPage(${total})" ${currentPage === total ? 'disabled' : ''}>Last &gt;&gt;</button>
+    `;
+  }
+
+  window.addEventListener('resize', () => renderPage(currentPage));
+
 </script>
 </body>
 </html>
