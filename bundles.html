@@ -254,19 +254,26 @@
     const grid = document.getElementById('grid');
     grid.innerHTML = pageProducts.map(p => {
       const inList = !!list[p.code];
+      const discount = p.original_price ? Math.round((1 - p.price / p.original_price) * 100) : null;
       return `<div class="card">
         <div class="card-img-wrap">
           <img class="card-img" src="${p.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-          <div class="card-img-fallback">🚗</div>
+          <div class="card-img-fallback">🎁</div>
+          <span class="bundle-badge">🎁 Bundle</span>
         </div>
         <div class="card-body">
-          <div class="card-code-name"><span class="code">${p.code}</span> : ${esc(p.name)}</div>
+          <div class="bundle-name">${esc(p.bundle_name)}</div>
+          <div class="card-code-name"><strong>${p.code}</strong> : ${esc(p.name)}</div>
           <div class="card-brand">${esc(p.brand)}</div>
-          <div class="card-price">₹${p.price}</div>
+          <div class="price-row">
+            ${p.original_price ? `<span class="original-price">₹${p.original_price}</span>` : ""}
+            <span class="selling-price">₹${p.price}</span>
+            ${discount ? `<span class="discount-tag">${discount}% Off</span>` : ""}
+          </div>
           <button class="add-btn" id="btn-${p.code}"
             data-code="${p.code}"
-            data-name="${esc(p.name)}"
+            data-name="${esc(p.bundle_name)}"
             onclick="addToList(this)"
             ${inList ? "disabled" : ""}>
             ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
