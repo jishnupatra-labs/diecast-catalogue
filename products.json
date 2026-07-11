@@ -1428,6 +1428,20 @@
     "image": "images/JBC32.jpg"
   },
   {
+    "id": 168,
+    "code": "JJM08",
+    "brand": "Hot Wheels",
+    "name": "AMARU GTC",
+    "bundle_name": null,
+    "series": "Hot Wheels Treasure Hunt",
+    "year": 2026,
+    "price": 500,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJM08.jpg"
+  },
+  {
     "id": 84,
     "code": "JJM07",
     "brand": "Hot Wheels",
