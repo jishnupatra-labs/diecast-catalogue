@@ -2238,5 +2238,19 @@
     "status": "Available",
     "type": "single",
     "image": "images/JJM08.jpg"
+  },
+  {
+    "id": 161,
+    "code": "JJK68",
+    "brand": "Hot Wheels",
+    "name": "2020 FORD MUSTANG SHELBY GT500",
+    "bundle_name": null,
+    "series": "Hot Wheels Mainline",
+    "year": 2026,
+    "price": 349,
+    "original_price": null,
+    "status": "Available",
+    "type": "single",
+    "image": "images/JJK68.jpg"
   }
 ]
