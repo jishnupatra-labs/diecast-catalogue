@@ -1492,7 +1492,7 @@
     "year": 2026,
     "price": 289,
     "original_price": null,
-    "status": "SOLD",
+    "status": "Available",
     "type": "single",
     "image": "images/JHP84.jpg",
     "id": 107
@@ -2350,19 +2350,5 @@
     "type": "bundle",
     "image": "images/MMW36.jpg",
     "id": 168
-  },
-  {
-    "code": "JHP84",
-    "brand": "Matchbox",
-    "name": "1997 McLaren F1 GT",
-    "bundle_name": null,
-    "series": "Matchbox Box",
-    "year": 2026,
-    "price": 289,
-    "original_price": null,
-    "status": "Available",
-    "type": "single",
-    "image": "images/JHP84.jpg",
-    "id": 169
   }
 ]
