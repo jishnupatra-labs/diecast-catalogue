@@ -22,7 +22,7 @@
     "year": null,
     "price": 269,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JKX81.jpg",
     "id": 2
@@ -106,7 +106,7 @@
     "year": null,
     "price": 289,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JJK79.jpg",
     "id": 8
@@ -1814,7 +1814,7 @@
     "year": null,
     "price": 986,
     "original_price": 1096,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW01.jpg",
     "id": 130
