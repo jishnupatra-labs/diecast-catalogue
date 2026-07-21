@@ -99,6 +99,13 @@
     padding: 7px 10px;
     white-space: nowrap;
   }
+  .sold-btn {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    cursor: not-allowed !important;
+    opacity: 0.85;
+  }
+  .sold-btn:hover { background: #dc2626 !important; opacity: 0.85; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -148,6 +155,7 @@
       return;
       grid.innerHTML = bundles.map(p => {
         const inList = !!list[p.code];
+        const isSold = p.status === "SOLD";
         const discount = p.original_price ? Math.round((1 - p.price / p.original_price) * 100) : null;
         return `<div class="card">
           <div class="card-img-wrap">
@@ -165,12 +173,12 @@
               <span class="selling-price">₹${p.price}</span>
               ${discount ? `<span class="discount-tag">${discount}% Off</span>` : ""}
             </div>
-            <button class="add-btn" id="btn-${p.code}"
+            <button class="add-btn ${isSold ? 'sold-btn' : ''}" id="btn-${p.code}"
               data-code="${p.code}"
               data-name="${esc(p.bundle_name)}"
               onclick="addToList(this)"
-              ${inList ? "disabled" : ""}>
-              ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
+              ${p.status === "SOLD" || inList ? "disabled" : ""}>
+              ${p.status === "SOLD" ? "SOLD OUT" : inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
             </button>
           </div>
         </div>`;

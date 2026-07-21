@@ -106,6 +106,13 @@
     padding: 7px 10px;
     white-space: nowrap;
   }
+  .sold-btn {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    cursor: not-allowed !important;
+    opacity: 0.85;
+  }
+  .sold-btn:hover { background: #dc2626 !important; opacity: 0.85; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -166,7 +173,8 @@
       return;
       grid.innerHTML = products.map(p => {
         const inList = !!list[p.code];
-        return `<div class="card">
+        const isSold = p.status === "SOLD";
+      return `<div class="card">
           <div class="card-img-wrap">
             <img class="card-img" src="${p.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
@@ -176,12 +184,12 @@
             <div class="card-code-name"><span class="code">${p.code}</span> : ${esc(p.name)}</div>
             <div class="card-brand">${esc(p.brand)}</div>
             <div class="card-price">₹${p.price}</div>
-            <button class="add-btn" id="btn-${p.code}"
+            <button class="add-btn ${isSold ? 'sold-btn' : ''}" id="btn-${p.code}"
               data-code="${p.code}"
               data-name="${esc(p.name)}"
               onclick="addToList(this)"
-              ${inList ? "disabled" : ""}>
-              ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
+              ${p.status === "SOLD" || inList ? "disabled" : ""}>
+              ${p.status === "SOLD" ? "SOLD OUT" : inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
             </button>
           </div>
         </div>`;
@@ -266,6 +274,7 @@
     const grid = document.getElementById('grid');
     grid.innerHTML = pageProducts.map(p => {
       const inList = !!list[p.code];
+      const isSold = p.status === "SOLD";
       return `<div class="card">
         <div class="card-img-wrap">
           <img class="card-img" src="${p.image}" alt="" onclick="openLightbox(this.src)" style="cursor:zoom-in;"
@@ -276,12 +285,12 @@
           <div class="card-code-name"><span class="code">${p.code}</span> : ${esc(p.name)}</div>
           <div class="card-brand">${esc(p.brand)}</div>
           <div class="card-price">₹${p.price}</div>
-          <button class="add-btn" id="btn-${p.code}"
+          <button class="add-btn ${isSold ? 'sold-btn' : ''}" id="btn-${p.code}"
             data-code="${p.code}"
             data-name="${esc(p.name)}"
             onclick="addToList(this)"
-            ${inList ? "disabled" : ""}>
-            ${inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
+            ${p.status === "SOLD" || inList ? "disabled" : ""}>
+            ${p.status === "SOLD" ? "SOLD OUT" : inList ? "✅ Added to My Garage" : "+ Add to My Garage"}
           </button>
         </div>
       </div>`;

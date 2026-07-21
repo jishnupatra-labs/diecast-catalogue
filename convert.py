@@ -13,14 +13,11 @@ Requirements:
 import json
 import os
 import openpyxl
-from datetime import datetime
 
 # ── Config ──
-EXCEL_PATH   = os.path.join(os.getcwd(), 'inventory', 'Inventory.xlsx')
-OUTPUT_PATH  = os.path.join(os.getcwd(), 'products.json')
+EXCEL_PATH  = os.path.join(os.getcwd(), 'inventory', 'Inventory.xlsx')
+OUTPUT_PATH = os.path.join(os.getcwd(), 'products.json')
 
-# These sheet names map to series values in JSON
-# Bundles sheet handled separately
 SINGLE_SHEETS = [
     'Hot Wheels Mainline',
     'Hot Wheels Premium',
@@ -48,21 +45,17 @@ COL_STATUS         = 9
 
 
 def clean(val):
-    """Strip whitespace from a cell value, return empty string if None."""
     if val is None:
         return ''
     return str(val).strip()
 
 
 def parse_year(val):
-    """Convert Excel serial date or plain year to int. Return None if invalid."""
     if val is None:
         return None
     try:
         v = int(float(str(val)))
-        # Excel serial dates are > 40000, convert to year
         if v > 40000:
-            # Excel epoch is 1900-01-01 (serial 1)
             from datetime import date, timedelta
             excel_epoch = date(1899, 12, 30)
             actual_date = excel_epoch + timedelta(days=v)
@@ -73,7 +66,6 @@ def parse_year(val):
 
 
 def parse_price(val):
-    """Convert price cell to int. Return None if N/A or invalid."""
     s = clean(val)
     if s.upper() in ('N/A', '', 'NONE', '-'):
         return None
@@ -84,36 +76,38 @@ def parse_price(val):
 
 
 def process_sheet(ws, is_bundle=False):
-    """Process a worksheet and return list of product dicts."""
     products = []
     rows = list(ws.iter_rows(values_only=True))
 
     if len(rows) < 2:
-        return products  # Empty or header-only sheet
+        return products
 
-    # Skip header row
     for row in rows[1:]:
         if not row or not row[COL_CODE]:
-            continue  # Skip empty rows
+            continue
 
         code   = clean(row[COL_CODE])
         brand  = clean(row[COL_BRAND])
         name   = clean(row[COL_NAME])
         series = clean(row[COL_SERIES])
-        status = clean(row[COL_STATUS])
+        status = clean(row[COL_STATUS]).upper()
 
         if not code or not name:
             continue
 
-        # Skip SOLD items
         selling_price = parse_price(row[COL_SELLING_PRICE])
-        if status.upper() == 'SOLD' or selling_price == 0 or selling_price is None:
-            print(f"  ⏭️  Skipping SOLD/zero: {code} - {name}")
+
+        # Skip only truly invalid entries (no price at all)
+        if selling_price is None or selling_price == 0:
+            print(f"  ⏭️  Skipping (no price): {code} - {name}")
             continue
 
         year           = parse_year(row[COL_YEAR])
         bundle_name    = clean(row[COL_BUNDLE_NAME])
         original_price = parse_price(row[COL_ORIGINAL_PRICE])
+
+        # SOLD items are included but marked as SOLD
+        item_status = "SOLD" if status == "SOLD" else "Available"
 
         product = {
             "code":           code,
@@ -124,7 +118,7 @@ def process_sheet(ws, is_bundle=False):
             "year":           year,
             "price":          selling_price,
             "original_price": original_price,
-            "status":         "Available",
+            "status":         item_status,
             "type":           "bundle" if is_bundle else "single",
             "image":          f"images/{code}.jpg"
         }
@@ -144,8 +138,9 @@ def main():
     wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
     all_products = []
     idx = 1
+    total_sold = 0
+    total_available = 0
 
-    # Process single product sheets
     for sheet_name in SINGLE_SHEETS:
         if sheet_name not in wb.sheetnames:
             print(f"  ⚠️  Sheet not found, skipping: {sheet_name}")
@@ -158,17 +153,24 @@ def main():
             print(f"  📭 Empty sheet: {sheet_name}")
             continue
 
-        print(f"  ✅ {sheet_name}: {len(products)} products")
+        available = sum(1 for p in products if p['status'] == 'Available')
+        sold      = sum(1 for p in products if p['status'] == 'SOLD')
+        total_available += available
+        total_sold      += sold
+
+        print(f"  ✅ {sheet_name}: {available} available, {sold} sold")
+
         for p in products:
             p['id'] = idx
             idx += 1
             all_products.append(p)
 
-    # Process Bundles sheet
     if BUNDLE_SHEET in wb.sheetnames:
         ws = wb[BUNDLE_SHEET]
         bundles = process_sheet(ws, is_bundle=True)
-        print(f"  ✅ {BUNDLE_SHEET}: {len(bundles)} bundles")
+        b_available = sum(1 for p in bundles if p['status'] == 'Available')
+        b_sold      = sum(1 for p in bundles if p['status'] == 'SOLD')
+        print(f"  ✅ {BUNDLE_SHEET}: {b_available} available, {b_sold} sold")
         for p in bundles:
             p['id'] = idx
             idx += 1
@@ -176,13 +178,14 @@ def main():
     else:
         print(f"  ⚠️  Sheet not found, skipping: {BUNDLE_SHEET}")
 
-    # Write products.json
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(all_products, f, indent=2, ensure_ascii=False)
 
     print(f"\n✅ Done! {len(all_products)} products written to products.json")
-    print(f"   Last ID: {idx - 1}")
-    print(f"   Output: {OUTPUT_PATH}\n")
+    print(f"   Available : {total_available}")
+    print(f"   SOLD      : {total_sold}")
+    print(f"   Last ID   : {idx - 1}")
+    print(f"   Output    : {OUTPUT_PATH}\n")
 
 
 if __name__ == '__main__':
