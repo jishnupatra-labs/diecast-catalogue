@@ -95,18 +95,12 @@ def process_sheet(ws, is_bundle=False):
         if not code or not name:
             continue
 
-        selling_price = parse_price(row[COL_SELLING_PRICE])
-
-        # Skip only truly invalid entries (no price at all)
-        if selling_price is None or selling_price == 0:
-            print(f"  ⏭️  Skipping (no price): {code} - {name}")
-            continue
-
+        selling_price  = parse_price(row[COL_SELLING_PRICE])
         year           = parse_year(row[COL_YEAR])
         bundle_name    = clean(row[COL_BUNDLE_NAME])
         original_price = parse_price(row[COL_ORIGINAL_PRICE])
 
-        # SOLD items are included but marked as SOLD
+        # Status comes directly from Excel — Available or SOLD
         item_status = "SOLD" if status == "SOLD" else "Available"
 
         product = {
