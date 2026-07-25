@@ -778,7 +778,7 @@
     "year": null,
     "price": 699,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JBC34.jpg",
     "id": 56
@@ -792,7 +792,7 @@
     "year": null,
     "price": 899,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JBC28.jpg",
     "id": 57
@@ -820,7 +820,7 @@
     "year": null,
     "price": 699,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JBC32.jpg",
     "id": 59
@@ -932,7 +932,7 @@
     "year": 2026,
     "price": 219,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHK33.jpg",
     "id": 67
@@ -1842,7 +1842,7 @@
     "year": null,
     "price": 1438,
     "original_price": 1598,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW03.jpg",
     "id": 132
@@ -1856,7 +1856,7 @@
     "year": null,
     "price": 1168,
     "original_price": 1298,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW04.jpg",
     "id": 133
@@ -1926,7 +1926,7 @@
     "year": null,
     "price": 1258,
     "original_price": 1398,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW05.jpg",
     "id": 138
@@ -1940,7 +1940,7 @@
     "year": null,
     "price": 1662,
     "original_price": 1847,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW06.jpg",
     "id": 139
@@ -1954,7 +1954,7 @@
     "year": null,
     "price": 2157,
     "original_price": 2397,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW07.jpg",
     "id": 140
@@ -2122,7 +2122,7 @@
     "year": null,
     "price": 880,
     "original_price": 978,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW19.jpg",
     "id": 152
@@ -2318,7 +2318,7 @@
     "year": null,
     "price": 790,
     "original_price": 878,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW33.jpg",
     "id": 166
