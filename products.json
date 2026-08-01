@@ -904,7 +904,7 @@
     "year": 2026,
     "price": 279,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHK31.jpg",
     "id": 65
@@ -960,7 +960,7 @@
     "year": 2026,
     "price": 279,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHK34.jpg",
     "id": 69
@@ -2038,7 +2038,7 @@
     "year": null,
     "price": 663,
     "original_price": 737,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW13.jpg",
     "id": 146
@@ -2066,7 +2066,7 @@
     "year": null,
     "price": 941,
     "original_price": 1046,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW15.jpg",
     "id": 148
@@ -2136,7 +2136,7 @@
     "year": null,
     "price": 493,
     "original_price": 548,
-    "status": "Available",
+    "status": "SOLD",
     "type": "bundle",
     "image": "images/MMW20.jpg",
     "id": 153
