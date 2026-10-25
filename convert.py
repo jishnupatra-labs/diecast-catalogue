@@ -21,12 +21,18 @@ OUTPUT_PATH = os.path.join(os.getcwd(), 'products.json')
 SINGLE_SHEETS = [
     'Hot Wheels Mainline',
     'Hot Wheels Premium',
+    'Hot Wheels Silver Series',
     'Hot Wheels Treasure Hunt',
     'Hot Wheels 5 Packs',
+    'Hot Wheels Color Shifters',
     'Matchbox Card',
     'Matchbox Box',
     'Matchbox Moving Parts',
+    'Matchbox 5 Packs',
+    'Matchbox Sky Busters',
+    'Matchbox Working Rigs',
     'MiniGT',
+    'Tomica',
 ]
 
 BUNDLE_SHEET = 'Bundles'
