@@ -114,13 +114,71 @@
   }
   .sold-btn:hover { background: #dc2626 !important; opacity: 0.85; }
   .hidden { display: none !important; }
+
+  /* ── Availability filter (All / In Stock / Sold Out) ── */
+  .avail-wrap { display: flex; justify-content: center; padding: 14px 10px 0; }
+  .avail-pill {
+    display: inline-flex; max-width: 100%; background: #f3f4f6;
+    border-radius: 999px; padding: 4px; gap: 2px;
+    box-shadow: inset 0 0 0 1px #e5e7eb;
+  }
+  .avail-opt {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: none; background: transparent; color: #111827;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    padding: 9px 20px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+  }
+  .avail-opt:hover:not(.active) { background: #e5e7eb; }
+  .avail-opt:focus-visible { outline: 2px solid #111827; outline-offset: 2px; }
+  .avail-opt.active { background: #111827; color: #ffffff; }
+  .avail-count {
+    background: #e5e7eb; color: #111827; font-size: 11px; font-weight: 700;
+    min-width: 24px; padding: 2px 8px; border-radius: 999px; text-align: center;
+  }
+  .avail-opt.active .avail-count { background: #ffffff; color: #111827; }
+  @media (max-width: 600px) {
+    .avail-wrap { padding: 12px 10px 0; }
+    .avail-pill { width: 100%; }
+    .avail-opt {
+      flex: 1 1 0; flex-direction: column; gap: 3px;
+      padding: 7px 4px; min-height: 46px; font-size: 12px;
+    }
+  }
+
+  /* ── Empty state for the availability filter ── */
+  #empty-state { text-align: center; padding: 44px 20px 56px; color: #1f2937; }
+  #empty-state svg { display: block; width: 150px; height: auto; margin: 0 auto 14px; }
+  #empty-state p.empty-text { font-size: 28px; font-weight: 500; color: #1f2937; line-height: 1.25; }
+  @media (max-width: 600px) {
+    #empty-state { padding: 32px 16px 44px; }
+    #empty-state svg { width: 120px; }
+    #empty-state p.empty-text { font-size: 22px; }
+  }
 </style>
 </head>
 <body>
 
 <div id="loading-state"><div class="icon">🏎️</div><p>Loading catalogue…</p></div>
 <div id="error-state" class="hidden"><div class="icon">⚠️</div><h2>Couldn't load products</h2><p>Please refresh.</p></div>
-<div id="empty-state" class="hidden"><div class="icon">🚧</div><h2>Coming Soon</h2><p>No products available yet.</p></div>
+<div id="availability-filter" class="avail-wrap hidden" role="group" aria-label="Filter by availability">
+  <div class="avail-pill">
+    <button type="button" class="avail-opt active" data-filter="all" aria-pressed="true"><span class="avail-label">All</span><span class="avail-count" id="count-all">0</span></button>
+    <button type="button" class="avail-opt" data-filter="in-stock" aria-pressed="false"><span class="avail-label">In Stock</span><span class="avail-count" id="count-in-stock">0</span></button>
+    <button type="button" class="avail-opt" data-filter="sold-out" aria-pressed="false"><span class="avail-label">Sold Out</span><span class="avail-count" id="count-sold-out">0</span></button>
+  </div>
+</div>
+<div id="empty-state" class="hidden">
+  <svg viewBox="0 0 160 140" fill="none" stroke="#1f2937" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+    <path d="M80 8v14M58 16l8 10M102 16l-8 10"/>
+    <path d="M44 68L31 51l34-10 15 11z" fill="#f9fafb"/>
+    <path d="M116 68l13-17-34-10-15 11z" fill="#f9fafb"/>
+    <path d="M80 52l36 16-36 16-36-16z" fill="#e5e7eb"/>
+    <path d="M44 68l36 16v44L44 112z" fill="#f3f4f6"/>
+    <path d="M116 68L80 84v44l36-16z" fill="#d1d5db"/>
+  </svg>
+  <p class="empty-text">Nothing here right now</p>
+</div>
 <div id="grid" class="hidden"></div>
 <div id="pagination" class="hidden"></div>
 <div id="toast"></div>
@@ -165,7 +223,8 @@
         }
       });
       document.getElementById("loading-state").classList.add("hidden");
-      if (products.length === 0) { document.getElementById("empty-state").classList.remove("hidden"); return; }
+      catalogueLoaded = true;
+      document.getElementById("availability-filter").classList.remove("hidden");
       const grid = document.getElementById("grid");
       grid.classList.remove("hidden");
       allProducts = products;
@@ -260,18 +319,30 @@
   }
 
   function getTotalPages() {
-    return Math.ceil(allProducts.length / getItemsPerPage());
+    return Math.ceil(getVisibleProducts().length / getItemsPerPage());
   }
 
   function renderPage(page) {
+    if (!catalogueLoaded) return;
     currentPage = page;
     const itemsPerPage = getItemsPerPage();
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const pageProducts = allProducts.slice(start, end);
+    const visibleProducts = getVisibleProducts();
+    const pageProducts = visibleProducts.slice(start, end);
     const list = loadList();
 
     const grid = document.getElementById('grid');
+    updateFilterUI();
+    if (visibleProducts.length === 0) {
+      grid.innerHTML = '';
+      grid.classList.add('hidden');
+      document.getElementById('empty-state').classList.remove('hidden');
+      renderPagination();
+      return;
+    }
+    document.getElementById('empty-state').classList.add('hidden');
+    grid.classList.remove('hidden');
     grid.innerHTML = pageProducts.map(p => {
       const inList = !!list[p.code];
       const isSold = p.status === "SOLD";
@@ -315,6 +386,40 @@
       <button class="page-btn" onclick="renderPage(${total})" ${currentPage === total ? 'disabled' : ''}>Last &gt;&gt;</button>
     `;
   }
+
+  // ── Availability filter ──
+  let activeFilter = 'all';
+  let catalogueLoaded = false;
+
+  function isSoldOut(p) { return p.status === "SOLD"; }
+
+  function getVisibleProducts() {
+    if (activeFilter === 'in-stock') return allProducts.filter(p => !isSoldOut(p));
+    if (activeFilter === 'sold-out') return allProducts.filter(p => isSoldOut(p));
+    return allProducts;
+  }
+
+  function updateFilterUI() {
+    const sold = allProducts.filter(isSoldOut).length;
+    const counts = { 'all': allProducts.length, 'in-stock': allProducts.length - sold, 'sold-out': sold };
+    Object.keys(counts).forEach(k => {
+      document.getElementById('count-' + k).textContent = counts[k];
+    });
+    document.querySelectorAll('.avail-opt').forEach(btn => {
+      const on = btn.dataset.filter === activeFilter;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function setAvailabilityFilter(f) {
+    activeFilter = f;
+    renderPage(1);
+  }
+
+  document.querySelectorAll('.avail-opt').forEach(btn => {
+    btn.addEventListener('click', () => setAvailabilityFilter(btn.dataset.filter));
+  });
 
   window.addEventListener('resize', () => renderPage(currentPage));
 
