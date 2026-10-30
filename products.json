@@ -3998,7 +3998,7 @@
     "year": null,
     "price": 999,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/TPF512R.jpg",
     "id": 286
@@ -4054,7 +4054,7 @@
     "year": null,
     "price": 999,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/TPLMP400R.jpg",
     "id": 290

@@ -37,13 +37,9 @@ const SERIES_FILTER = (window.CATALOGUE_CONFIG || {}).seriesFilter;
       const res = await fetch(PRODUCTS_URL, { cache: "no-store" });
       if (!res.ok) throw new Error();
       const all = await res.json();
-      const seen = {};
-      const products = [];
-      all.forEach(p => {
-        if (p.series === SERIES_FILTER && !seen[p.code]) {
-          seen[p.code] = true; products.push(p);
-        }
-      });
+      const products = all.filter(
+		p => p.series === SERIES_FILTER
+	  );
       document.getElementById("loading-state").classList.add("hidden");
       catalogueLoaded = true;
       document.getElementById("availability-filter").classList.remove("hidden");
