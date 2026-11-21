@@ -39,7 +39,7 @@ const SERIES_FILTER = (window.CATALOGUE_CONFIG || {}).seriesFilter;
       const all = await res.json();
       const products = all.filter(
 		p => p.series === SERIES_FILTER
-	  );
+	  ).reverse();
       document.getElementById("loading-state").classList.add("hidden");
       catalogueLoaded = true;
       document.getElementById("availability-filter").classList.remove("hidden");
