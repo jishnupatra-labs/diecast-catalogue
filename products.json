@@ -554,7 +554,7 @@
     "year": null,
     "price": 219,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JJK81.jpg",
     "id": 40
@@ -582,7 +582,7 @@
     "year": null,
     "price": 219,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JJK14.jpg",
     "id": 42
@@ -596,7 +596,7 @@
     "year": null,
     "price": 219,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JJK24.jpg",
     "id": 43
@@ -1702,7 +1702,7 @@
     "year": null,
     "price": 649,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHW97.jpg",
     "id": 122
@@ -3760,7 +3760,7 @@
     "year": null,
     "price": 549,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JRM98.jpg",
     "id": 269
