@@ -3662,7 +3662,7 @@
     "year": null,
     "price": 559,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHV24.jpg",
     "id": 262
@@ -3802,7 +3802,7 @@
     "year": null,
     "price": 549,
     "original_price": null,
-    "status": "Available",
+    "status": "SOLD",
     "type": "single",
     "image": "images/JHV56.jpg",
     "id": 272
